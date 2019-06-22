@@ -72,46 +72,8 @@ app.put('/updateVote/:id/:teamName', celebrate({
 }), (req, res) => {
 
     try {
-        User.findOne({ email: req.body.email }, (err, data) => {
-            if (data.email === req.body.email) {
-                           console.log('333333')
-                Match.updateOne({
-                    _id: mongodb.ObjectID(req.params.id),
-                    "teams.name": req.params.teamName
-                },
 
-                    {
-                        $inc: { "teams.$.vote": 1 }
-                    },
-
-                    (error, data1) => {
-                        if (error) {
-                            res.status(200).json({
-                                statusCode: 400,
-                                message: "user not found",
-
-
-                            })
-                        }
-                        return res.status(200).json({
-                            statusCode: 200,
-                            message: "sucess",
-                            data: data
-                        })
-                    })
-
-            } else {
-
-                console.log("does not exits");
-                return res.contentType('json').json({
-                    statusCode: 500,
-                    message: "does not exist"
-                })
-            }
-        })
-
-
-        /* console.log('111000')
+         console.log('111000')
          Match.updateOne({
              _id: mongodb.ObjectID(req.params.id),
              "teams.name": req.params.teamName
@@ -135,7 +97,7 @@ app.put('/updateVote/:id/:teamName', celebrate({
                      message: "sucess",
                      data: data
                  })
-             })*/
+             })
 
     } catch (err) {
         console.error(err)
