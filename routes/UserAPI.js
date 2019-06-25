@@ -1,4 +1,6 @@
-const express = require('express');
+const express=require('express')
+const router=express.Router();
+
 const morgan = require('morgan');
 const mongodb = require('mongodb')
 const mongoose = require('mongoose')
@@ -8,9 +10,11 @@ const { celebrate, Joi, errors } = require('celebrate')
 
 const app = express()
 
+
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
+
 
 
 
@@ -19,7 +23,7 @@ const User = require('./models/User');
 
 const URI = "mongodb://localhost:27017/match-prediction"
 
-//connectiv
+//mongoose connection
 mongoose.connect(URI, { useNewUrlParser: true })
     .then(() => {
         console.log("db connected")
@@ -29,7 +33,7 @@ mongoose.connect(URI, { useNewUrlParser: true })
     })
 
 //add match
-app.post('/addMatch', celebrate({
+router.post('/addMatch', celebrate({
     body: Joi.object().keys({
         matchNo: Joi.string().required(),
         teams: Joi.array().items().optional()
@@ -67,7 +71,7 @@ app.post('/addMatch', celebrate({
 
 //update vote
 
-app.put('/updateVote/:id/:teamName', celebrate({
+router.put('/updateVote/:id/:teamName', celebrate({
     body: Joi.object().keys({
         email: Joi.string().required(),
         matchNo: Joi.string().optional(),
@@ -124,7 +128,7 @@ app.put('/updateVote/:id/:teamName', celebrate({
 
 
 //sign up
-app.post('/test', celebrate({
+router.post('/test', celebrate({
     body: Joi.object().keys({
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
@@ -165,7 +169,7 @@ app.post('/test', celebrate({
 
 //sign in
 
-app.post('/signIn', celebrate({
+router.post('/signIn', celebrate({
     body: Joi.object().keys({
         email: Joi.string().required(),
         password: Joi.string().required(),
@@ -228,6 +232,10 @@ app.use((err, req, res, next) => {
 })
 
 
-app.listen(7000, () => {
-    console.log('server is running @ 3000')
+
+
+router.get('/userInfo',(req,res)=>{
+    res.json('hello');
 })
+
+module.exports=router;
